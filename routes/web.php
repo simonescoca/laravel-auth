@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\ProjectController as ProjectController;
+use App\Http\Controllers\Guest\DashboardController as GuestHomeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,14 +15,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Auth::routes();
+
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+    Route::get('/', [ AdminDashboardController::class , 'home'])->name('home');
+    Route::get('/projects/deleted', [ProjectController::class, 'deletedIndex'] )->name('projects.deleted');
+    Route::post('/projects/deleted/{project}', [ProjectController::class, 'restore'] )->name('projects.restore');
+    Route::delete('/projects/deleted/{project}', [ProjectController::class, 'obliterate'] )->name('projects.obliterate');
+    Route::resource('/projects', ProjectController::class);
 });
 
-Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::name('guest.')->group(function () {
+    Route::get('/', [ GuestHomeController::class , 'home'])->name('home');
+});
