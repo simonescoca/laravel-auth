@@ -17,7 +17,8 @@ class Project extends Model
         'title',
         'content',
         'url',
-        'slug'
+        'slug',
+        'image'
     ];
 
     public function getRouteKeyName(): string
