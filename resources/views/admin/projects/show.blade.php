@@ -19,6 +19,11 @@
                     <a href="{{ route('admin.projects.edit', $project) }}" class="btn btn-sm btn-success">
                         Edit
                     </a>
+                    @if (str_starts_with($project->image, 'http' ))
+                        <img src="{{ $project->image }}" alt="{{ $project->title }}">
+                    @else
+                        <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}">
+                    @endif
                     <form class="d-inline-block" action="{{ route('admin.projects.destroy', $project ) }}" method="POST">
                         @csrf
                         @method('DELETE')
