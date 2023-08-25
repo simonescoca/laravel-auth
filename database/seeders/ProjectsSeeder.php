@@ -20,6 +20,7 @@ class ProjectsSeeder extends Seeder
             $newProject->content = $faker->paragraphs(10, true);
             $newProject->url = $faker->url();
             $newProject->slug = Str::of($newProject->title)->slug('-');
+            $newProject->image = $faker->imageUrl(480, 360, 'post', true, 'posts', true, 'png');
             $newProject->save();
             $newProject->slug = Str::of("$newProject->id " . $newProject->title)->slug('-');
             $newProject->save();
